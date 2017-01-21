@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/mainLayout"
+    android:background="@drawable/splash_bg">
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:srcCompat="@drawable/splash_kid_icon2"
+        android:id="@+id/kidIcon"
+        android:layout_below="@+id/splashTittle"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="40dp" />
+
+    <ImageView
+        android:layout_width="210dp"
+        android:layout_height="60dp"
+        android:id="@+id/mykidsBg"
+        android:background="@drawable/mykids_style"
+        android:layout_alignTop="@+id/splashTittle"
+        android:layout_alignLeft="@+id/kidIcon"
+        android:layout_alignStart="@+id/kidIcon" />
+
+    <TextView
+        android:text="MyKids"
+        android:layout_marginTop="51dp"
+        android:layout_height="60dp"
+        android:layout_width="200dp"
+        android:textSize="50dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textColor="#fff"
+        android:id="@+id/splashTittle"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/mykidsBg"
+        android:layout_alignEnd="@+id/mykidsBg" />
+</RelativeLayout>
