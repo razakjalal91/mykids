@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.Timer;
+
 /**
  * Created by Razak on 1/22/2017.
  */
@@ -22,5 +24,18 @@ public class splash_activity extends Activity {
         splashtittle = (TextView) findViewById(R.id.splashTittle);
         mykidsbg = (ImageView)  findViewById(R.id.mykidsBg);
         kidicon = (ImageView) findViewById(R.id.kidIcon);
+
+        Thread timerThread = new Thread(){
+            public void run(){
+                try{
+                    sleep(3000);
+                }catch(InterruptedException e){
+                    e.printStackTrace();
+                }finally {
+                    finish();
+                }
+            }
+        };
+        timerThread.start();
     }
 }

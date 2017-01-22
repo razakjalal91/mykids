@@ -1,5 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        android:layout_marginBottom="42dp"
+        android:id="@+id/camerafloatBtn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="22dp"
+        android:layout_marginEnd="22dp"
+        android:onClick="camera"
+        app:backgroundTint="?attr/actionMenuTextColor" />
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="@drawable/imgholder"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:id="@+id/snapphoto" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/presence_offline"
+        android:layout_above="@+id/camerafloatBtn"
+        android:layout_alignEnd="@+id/camerafloatBtn"
+        android:layout_marginBottom="25dp"
+        android:id="@+id/clearPic"
+        android:onClick="clearpic"
+        app:backgroundTint="?attr/actionMenuTextColor"/>
+
+    <Button
+        android:text="Send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sendstyle"
+        android:layout_above="@+id/camerafloatBtn"
+        android:layout_centerHorizontal="true"
+        android:onClick="sendimg"
+        android:id="@+id/sendImg" />
 
 </RelativeLayout>
