@@ -1,6 +1,7 @@
 package com.example.razak.tadikaapps;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,6 +33,8 @@ public class splash_activity extends Activity {
                 }catch(InterruptedException e){
                     e.printStackTrace();
                 }finally {
+                    Intent intent = new Intent(splash_activity.this,main_activity.class);
+                    startActivity(intent);
                     finish();
                 }
             }

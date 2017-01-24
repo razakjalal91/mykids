@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.util.Base64;
 import android.util.Size;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,8 +32,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -47,6 +51,7 @@ import static android.hardware.camera2.CameraDevice.*;
 public class main_activity extends Activity {
     GoogleApiClient mGoogleApiClient;
     FloatingActionButton camerafloatbtn, clearpic;
+    String ba1;
     ImageView snapic;
     Location mLocation;
     File sdImageMainDirectory;
@@ -54,6 +59,7 @@ public class main_activity extends Activity {
     private CameraDevice cameraDevice;
     private Camera myCamera;
     public Context context;
+    public static String TIME_STAMP;
     int CAMERA_REQUEST = 0;
 
     @Override
@@ -76,31 +82,33 @@ public class main_activity extends Activity {
     }
 
     public void sendimg(View view) {
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            return;
-        }
-        mLocation = lm.getLastKnownLocation(lm.GPS_PROVIDER);
-        Double latitude = mLocation.getLatitude();
-        Double longitude = mLocation.getLongitude();
-        String a = Double.toString(latitude);
-        String b = Double.toString(longitude);
-        Geocoder geo = new Geocoder(this, Locale.getDefault());
-        List<android.location.Address> addresses = null;
-
-        try {
-            addresses = geo.getFromLocation(latitude, longitude, 1);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-        String cityName = addresses.get(0).getAddressLine(0);
-        String stateName = addresses.get(0).getAddressLine(1);
-        String countryName = addresses.get(0).getAddressLine(2);
-        String fullAdd = cityName + stateName + countryName;
-        String newAdd = fullAdd.replaceAll("[,\\s]", "_");
-        Toast.makeText(getApplicationContext(),newAdd ,Toast.LENGTH_SHORT).show();
+//        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            return;
+//        }
+//        mLocation = lm.getLastKnownLocation(lm.GPS_PROVIDER);
+//        if(mLocation != null) {
+//            Double latitude = mLocation.getLatitude();
+//            Double longitude = mLocation.getLongitude();
+//            Geocoder geo = new Geocoder(this, Locale.getDefault());
+//            List<android.location.Address> addresses = null;
+//
+//            try {
+//                addresses = geo.getFromLocation(latitude, longitude, 1);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//            String cityName = addresses.get(0).getAddressLine(0);
+//            String stateName = addresses.get(0).getAddressLine(1);
+//            String countryName = addresses.get(0).getAddressLine(2);
+//            String fullAdd = cityName + stateName + countryName;
+//            String newAdd = fullAdd.replaceAll("[,\\s]", "_");
+//            Toast.makeText(getApplicationContext(), newAdd, Toast.LENGTH_SHORT).show();
+//        }else{
+//            Toast.makeText(getApplicationContext(), "Null bro", Toast.LENGTH_SHORT).show();
+//        }
 
         if(snapic.getDrawable()!=null){
             snapic.buildDrawingCache();
@@ -109,10 +117,12 @@ public class main_activity extends Activity {
             String root = Environment.getExternalStorageDirectory().toString();
             File myDir = new File(root + "/saved_images");
             myDir.mkdirs();
-            Random generator = new Random();
-            int n = 10000;
-            n = generator.nextInt(n);
-            String fname = "Image-"+ n +".jpg";
+
+            String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+            String hjkl=currentDateTimeString.replaceAll(" ", "_");
+            String hiop=hjkl.replaceAll(":", "-");
+            TIME_STAMP = hiop;
+            String fname = TIME_STAMP+".jpg";
             File file = new File (myDir, fname);
             if (file.exists ()) file.delete ();
             try {
@@ -120,20 +130,16 @@ public class main_activity extends Activity {
                 bmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
                 out.flush();
                 out.close();
+                // use insertImage(ContentResolver cr, Bitmap source, String title, String description)
                 MediaStore.Images.Media.insertImage(getContentResolver(), bmap,fname , "");
-                Toast.makeText(getApplicationContext(),"Saved",Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(getApplicationContext(),"Success!",Toast.LENGTH_SHORT).show();
+                new main_background(this,bmap,myDir,fname,file).execute();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
-
         }else{
             Toast.makeText(getApplicationContext(),"Photo Absent",Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     private void openCamera(){
