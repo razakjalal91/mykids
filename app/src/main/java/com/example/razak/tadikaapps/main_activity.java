@@ -81,11 +81,14 @@ public class main_activity extends Activity implements com.google.android.gms.lo
         studentsspinner();
     }
 
+
+
+
     public void studentsspinner(){
         ArrayList<String> studentList = new ArrayList<String>();
-        HttpGetArray arr = new HttpGetArray();
-        arr.ServiceCall(url,getApplicationContext());
-        String jsonStr = arr.ServiceCall(url,getApplicationContext());
+        HttpGetArray arr = new HttpGetArray(url,getApplicationContext());
+        new studentlist_background(url,getApplicationContext()).execute();
+        String jsonStr = arr.ServiceCall();
         if(jsonStr != null){
             try {
                 JSONObject obj = new JSONObject(jsonStr);
@@ -136,7 +139,6 @@ public class main_activity extends Activity implements com.google.android.gms.lo
                 String root = Environment.getExternalStorageDirectory().toString();
                 File myDir = new File(root + "/saved_images");
                 myDir.mkdirs();
-
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
                 String hjkl = currentDateTimeString.replaceAll(" ", "_");
                 String hiop = hjkl.replaceAll(":", "-");
