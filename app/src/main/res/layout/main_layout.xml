@@ -35,20 +35,29 @@
         app:fabSize="mini"
         app:srcCompat="@android:drawable/presence_offline"
         android:layout_above="@+id/camerafloatBtn"
-        android:layout_alignEnd="@+id/camerafloatBtn"
         android:layout_marginBottom="25dp"
         android:id="@+id/clearPic"
         android:onClick="clearpic"
-        app:backgroundTint="?attr/actionMenuTextColor"/>
+        app:backgroundTint="?attr/actionMenuTextColor"
+        android:layout_alignEnd="@+id/camerafloatBtn"
+        android:layout_alignStart="@+id/camerafloatBtn" />
 
     <Button
         android:text="Send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/sendstyle"
-        android:layout_above="@+id/camerafloatBtn"
-        android:layout_centerHorizontal="true"
         android:onClick="sendimg"
-        android:id="@+id/sendImg" />
+        android:id="@+id/sendImg"
+        android:layout_alignBottom="@+id/clearPic"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@+id/clearPic" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/studentDropdown"
+        android:layout_below="@+id/snapphoto"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

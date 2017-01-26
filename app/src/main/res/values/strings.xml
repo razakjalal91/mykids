@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MyKids</string>
+    
+    <string-array name="students_test">
+        <item>Abu</item>
+        <item>Ali</item>
+        <item>Aman</item>
+    </string-array>
 </resources>
