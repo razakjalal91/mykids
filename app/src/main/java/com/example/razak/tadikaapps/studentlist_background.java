@@ -12,9 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-
 import static com.google.android.gms.internal.zzs.TAG;
-
 /**
  * Created by Ajak on 1/26/2017.
  */

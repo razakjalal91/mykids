@@ -45,9 +45,7 @@ public class HttpGetArray implements Runnable{
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.connect();
             Toast.makeText(context,"Abu Dalam Try!",Toast.LENGTH_SHORT).show();
-
             conn.getResponseCode();
-
             InputStream in = new BufferedInputStream(conn.getInputStream()); //This Line Is The Problem
             response = convertStreamToString(in);
             return response;
