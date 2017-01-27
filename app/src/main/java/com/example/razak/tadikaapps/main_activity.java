@@ -24,10 +24,13 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.util.Base64;
+import android.util.Log;
 import android.util.Size;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -54,6 +57,8 @@ import java.util.Random;
 
 import static android.R.attr.data;
 import static android.hardware.camera2.CameraDevice.*;
+import static com.google.android.gms.tagmanager.zzbo.e;
+import static com.google.android.gms.wearable.DataMap.TAG;
 
 /**
  * Created by Razak on 1/22/2017.
@@ -68,6 +73,7 @@ public class main_activity extends Activity implements com.google.android.gms.lo
     Location myLocation;
     GoogleApiClient myGoogle;
     Spinner studentdropdown;
+    ArrayList<String> studentLists = new ArrayList<>();
     public static String url = "http://dev.16mb.com/mykids/attendance/studentlist.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,33 +84,37 @@ public class main_activity extends Activity implements com.google.android.gms.lo
         studentdropdown = (Spinner) findViewById(R.id.studentDropdown);
         clearpic = (FloatingActionButton) findViewById(R.id.clearPic);
         buildGoogleApiClient();
-        studentsspinner();
+        db_helper dh = new db_helper(url,getApplicationContext());
+        String a = dh.db_conn();
+        student_dropdown(a);
     }
 
+    public void student_dropdown(String a){
 
+        String output = "";
+        try {
+            JSONObject arrStudent = new JSONObject(a);
+            JSONArray students = arrStudent.getJSONArray("students");
 
+            for(int i = 0 ; i < students.length(); i++){
+                JSONObject student_obj = students.getJSONObject(i);
+                String fullname = student_obj.opt("fullname").toString();
 
-    public void studentsspinner(){
-        ArrayList<String> studentList = new ArrayList<String>();
-        HttpGetArray arr = new HttpGetArray(url,getApplicationContext());
-        new studentlist_background(url,getApplicationContext()).execute();
-        String jsonStr = arr.ServiceCall();
-        if(jsonStr != null){
-            try {
-                JSONObject obj = new JSONObject(jsonStr);
-                JSONArray students = obj.getJSONArray("students");
-                for(int i = 0;i < students.length(); i++){
-                    studentList.add(students.getString(i));
-                }
-                ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,studentList);
-                studentdropdown.setAdapter(adapter);
-            }catch(final JSONException j){
-                j.printStackTrace();
+                output = fullname;
+                studentLists.add(output);
             }
-        }else{
-            Toast.makeText(getApplicationContext(),"JSON Null.Why bro?",Toast.LENGTH_SHORT).show();
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+              this,R.layout.support_simple_spinner_dropdown_item,studentLists
+            );
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            studentdropdown.setAdapter(adapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
+
+
 
     public void camera(View view) {
         openCamera();
@@ -220,6 +230,7 @@ public class main_activity extends Activity implements com.google.android.gms.lo
     public void onConnectionSuspended(int i) {
 
     }
+
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
