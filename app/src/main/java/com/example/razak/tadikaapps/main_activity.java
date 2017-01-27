@@ -95,12 +95,14 @@ public class main_activity extends Activity implements com.google.android.gms.lo
         try {
             JSONObject arrStudent = new JSONObject(a);
             JSONArray students = arrStudent.getJSONArray("students");
-
+            String defaultspin = "Choose One";
+            studentLists.add(defaultspin);
             for(int i = 0 ; i < students.length(); i++){
                 JSONObject student_obj = students.getJSONObject(i);
                 String fullname = student_obj.opt("fullname").toString();
 
                 output = fullname;
+
                 studentLists.add(output);
             }
 
@@ -109,6 +111,17 @@ public class main_activity extends Activity implements com.google.android.gms.lo
             );
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             studentdropdown.setAdapter(adapter);
+            studentdropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    Toast.makeText(context,"No",Toast.LENGTH_SHORT).show();
+                }
+            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
